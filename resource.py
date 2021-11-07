@@ -1,19 +1,33 @@
 
 class Resource:
 
-    def __init__(self, name, rts, wts, lock):
+    def __init__(self, name):
+        """
+        Resource requested
+        - name is name
+        - self._version[key] = [rts, wts]
+        """
         self._name = name
-        self._rts = rts
-        self._wts = wts
+        self._version = {}
+        self._version[0] = [0, 0]
 
-    def set_rts(self, rts):
-        self._rts = rts
+    def add_version(self, id, rts, wts):
+        """
+        Add version of resource
+        """
+        self._version[id] = [rts, wts]
 
-    def set_wts(self, wts):
-        self._wts = wts
+    def update_rts(self, id, rts):
+        """
+        Update Read Time stamp
+        """
+        self._version[id][0] = rts
 
-    def get_rts(self):
-        return self._rts
+    def update_wts(self, id, wts):
+        """
+        Update Write Time Stamp
+        """
+        self._version[id][1] = wts
 
-    def get_wts(self):
-        return self._wts
+    def get_version(self):
+        return self._version

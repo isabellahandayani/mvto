@@ -8,6 +8,10 @@ class Transaction:
         self._name = name
         self._ts = ts
         self._status = Status.ACTIVE
+    
+    def __str__(self):
+        transaction = """ID       : {}\nName     : {}\nTimestamp: {}\nStatus   : {}""".format(self._id, self._name, self._ts, self._status)
+        return transaction
 
     def wait(self):
         self._status = Status.WAIT
