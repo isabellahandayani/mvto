@@ -17,6 +17,7 @@ def main():
         elif re.search(Pattern.END, query) is not None:
             done = True
             manager.run()
+            manager.result()
             break
         # Invalid
         else:

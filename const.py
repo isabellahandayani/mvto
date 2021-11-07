@@ -8,16 +8,8 @@ class Status:
     """
     ABORT = 0
     COMMIT = 1
-    WAIT = 2
-    ACTIVE = 3
+    ACTIVE = 2
 
-class Type:
-    """
-    Type of things a transaction can do
-    """
-    READ = "READ"
-    WRITE = "WRITE"
-    COMMIT = "COMMIT"
 
 class Pattern:
     """

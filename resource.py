@@ -1,5 +1,5 @@
 class Resource:
-    def __init__(self, name):
+    def __init__(self, name, content=""):
         """
         Resource requested
         - name is name
@@ -7,7 +7,7 @@ class Resource:
         """
         self._name = name
         self._version = {}
-        self._version[0] = [0, 0]
+        self._version[0] = [0, 0, content]
 
     def add_version(self, id, rts, wts):
         """
@@ -26,6 +26,12 @@ class Resource:
         Update Write Time Stamp
         """
         self._version[id][1] = wts
+
+    def update_content(self, id, content):
+        """
+        Update Content
+        """
+        self._version[id][2] = content
 
     def get_version(self):
         return self._version
