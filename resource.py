@@ -1,6 +1,4 @@
-
 class Resource:
-
     def __init__(self, name):
         """
         Resource requested
@@ -31,3 +29,8 @@ class Resource:
 
     def get_version(self):
         return self._version
+
+    def __str__(self):
+        resource = """Name : {}\nVers : {}
+        """.format(self._name, self._version)
+        return resource

@@ -22,3 +22,5 @@ class Transaction:
     def abort(self):
         self._status = Status.ABORT
 
+    def get_ts(self):
+        return self._ts
