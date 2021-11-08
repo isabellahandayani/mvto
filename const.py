@@ -6,9 +6,9 @@ class Status:
     Abort   : Aborted
     Wait    : Wait for other txn
     """
-    ABORT = 0
-    COMMIT = 1
-    ACTIVE = 2
+    ABORT = "ABORTED"
+    COMMIT = "COMMITED"
+    ACTIVE = "ACTIVE"
 
 
 class Pattern:

@@ -10,7 +10,7 @@ class Transaction:
         self._status = Status.ACTIVE
     
     def __str__(self):
-        transaction = """ID       : {}\nName     : {}\nTimestamp: {}\nStatus   : {}""".format(self._id, self._name, self._ts, self._status)
+        transaction = """ID       : {}\nName     : T{}\nTimestamp: {}\nStatus   : {}""".format(self._id, self._name, self._ts, self._status)
         return transaction
 
     def wait(self):
@@ -24,3 +24,6 @@ class Transaction:
 
     def get_ts(self):
         return self._ts
+    
+    def set_status(self, status):
+        self._status = status

@@ -38,27 +38,39 @@ class Manager:
     def check_prev(self, txn):
             pass
 
-
-    def req_write(self, res, txn):
+    def get_max(self, res, txn):
         curr = None
         TS = self.get_txn(txn).get_ts()
         for vers in self.get_vers(res):
             res_ts = self.get_vers(res)[vers]
-            if TS < res_ts[0] :
-                txn.set_status(Status.ABORT)
-                self.check_prev(txn)
-            elif TS == res_ts[1]:
-                pass
-            else:
-                pass
-        
+            if res_ts[1] <= TS:
+                curr = res_ts[1]
+    
+        return curr
+
+    def req_write(self, res, txn, val):
+        TS = self.get_txn(txn).get_ts()
+        qk = self.get_max(res, txn)
+        # Rollback
+        if qk is None:
+            pass
+        # Rollback
+        elif TS < self.get_vers(res)[qk][0]:
+            pass
+        # Overwrite
+        elif TS == self.get_vers(res)[qk][1]:
+            self._resource[res]._version[TS][2] = val 
+        # Add new version
+        else:
+            self._resource[res]._version[TS] = [TS, TS, val]
+
+
 
     def req_read(self, res, txn):
         TS = self.get_txn(txn).get_ts()
-        for vers in self.get_vers(res):
-            res_ts = self.get_vers(res)[vers]
-            if res_ts[0] < TS:
-                res_ts[0] = TS
+        qk = self.get_max(res, txn)
+        if qk is not None:
+            self.get_vers(res)[qk][0] = TS
     
     def run(self):
         while len(self._queue) > 0:
@@ -71,13 +83,15 @@ class Manager:
             # W/R
             elif(re.search(Pattern.WRITE, self._queue[0]) is not None):
                 params = getParam(self._queue[0])
+                params = [s.strip() for s in params]
                 if params[1] not in self._resource:
                     self._resource[params[1]] = Resource(params[1], params[2])
 
-                self.req_write(params[1], getNumber(params[0]))
+                self.req_write(params[1], getNumber(params[0])-1, params[2])
         
             elif(re.search(Pattern.READ, self._queue[0]) is not None):
                 params = getParam(self._queue[0])
+                params = [s.strip() for s in params]
                 if params[1] not in self._resource:                      
                     self._resource[params[1]] = Resource(params[1])
         
@@ -86,10 +100,10 @@ class Manager:
 
             # Commit
             elif(re.search(Pattern.COMMIT, self._queue[0]) is not None):
-                self._transaction[getNumber(self._queue[0])].set_status(Status.COMMIT) 
+                self._transaction[getNumber(self._queue[0]) - 1].set_status(Status.COMMIT) 
             self._queue.pop(0)
-            
-        self.print_resource()
+        
+        self.print_resource();
     
     def result(self):
         for x in self._transaction:
