@@ -52,11 +52,8 @@ class Manager:
         TS = self.get_txn(txn).get_ts()
         qk = self.get_max(res, txn)
         # Rollback
-        if qk is None:
-            pass
-        # Rollback
-        elif TS < self.get_vers(res)[qk][0]:
-            pass
+        if qk is None or TS < self.get_vers(res)[qk][0]:
+            self.get_txn(txn).set_status(Status.ABORT)
         # Overwrite
         elif TS == self.get_vers(res)[qk][1]:
             self._resource[res]._version[TS][2] = val 
