@@ -13,3 +13,11 @@ def getParam(text):
     """
     result = re.search(Pattern.BETWEEN, text)
     return result.group(1).split(",")
+
+def getTrans(text):
+    """
+    Get The Transaction Number
+    """
+    result = re.search("\d+", text)
+    if result == None: return None 
+    else: return result.group(0)
