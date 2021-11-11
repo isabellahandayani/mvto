@@ -4,6 +4,7 @@ from const import *
 from manager import *
 from transaction import *
 
+
 def main():
     query = input()
     done = False
@@ -11,7 +12,10 @@ def main():
     while not done:
         query = query.lower()
         # Begin
-        if re.search(Pattern.VALID, query) is not None or re.search(Pattern.COMMIT, query) is not None:
+        if (
+            re.search(Pattern.VALID, query) is not None
+            or re.search(Pattern.COMMIT, query) is not None
+        ):
             manager._queue.append(query)
         # End
         elif re.search(Pattern.END, query) is not None:

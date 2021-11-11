@@ -6,6 +6,7 @@ class Status:
     Abort   : Aborted
     Wait    : Wait for other txn
     """
+
     ABORT = "ABORTED"
     COMMIT = "COMMITED"
     ACTIVE = "ACTIVE"
@@ -15,6 +16,7 @@ class Pattern:
     """
     Cry
     """
+
     BEGIN = r"^begin[(]t\d+[)]$"
     WRITE = r"^w[(]t\d+,.*[)]$"
     END = r"^end$"

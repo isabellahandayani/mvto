@@ -38,5 +38,7 @@ class Resource:
 
     def __str__(self):
         resource = """Name : {}\nVers : {}
-        """.format(self._name, self._version)
+        """.format(
+            self._name, self._version
+        )
         return resource

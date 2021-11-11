@@ -52,7 +52,7 @@ class Manager:
 
     def check_write(self, txn):
         written = []
-        for x in self._write_logs[txn+1]:
+        for x in self._write_logs[txn + 1]:
             written.append(x)
         return written
 
@@ -71,7 +71,7 @@ class Manager:
             if x._status == Status.ABORT:
                 arr.append(x._ts)
         return arr
-    
+
     def rollback(self, read):
 
         if len(read) == 0:
@@ -80,7 +80,6 @@ class Manager:
         for txn in read:
             txn.abort()
             self.rollback(self.check_read(self.check_write(txn)))
-
 
     def get_max(self, res, txn):
         curr = None
@@ -119,7 +118,7 @@ class Manager:
         while len(self._queue) > 0:
             if int(getTrans(self._queue[0])) in self.get_aborted():
                 self._queue.pop(0)
-            else :
+            else:
                 # Begin
                 if re.search(Pattern.BEGIN, self._queue[0]) is not None:
                     txn = Transaction(
