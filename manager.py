@@ -9,11 +9,25 @@ class Manager:
         self._transaction = []
         self._queue = []
         self._resource = {}
+        self._read_logs = {}
+        self._write_logs = {}
         self._ts = 1
 
     def is_rollback(self, txn):
         return self.get_txn(txn-1)._status == Status.ABORT
 
+    def set_read(self, txn, vers, res):
+        if res in self._read_logs:
+            self._read_logs[res].append(txn, vers)
+        
+        self._read_logs[res] = [txn, vers]
+
+    def set_write(self, txn, vers, res):
+        if res in self._write_logs:
+            self._write_logs[res].append(txn, vers)
+        
+        self._write_logs[res] = [txn, vers]
+        
     def get_txn(self, key):
         try:
             return self._transaction[key]
@@ -34,7 +48,7 @@ class Manager:
     def print_resource(self):
         for x in self._resource:
             print(self._resource[x])
-
+        
     def check_prev(self, txn):
             pass
 
@@ -54,6 +68,7 @@ class Manager:
         # Rollback
         if qk is None or TS < self.get_vers(res)[qk][0]:
             self.get_txn(txn).set_status(Status.ABORT)
+            self.check_prev(txn)
         # Overwrite
         elif TS == self.get_vers(res)[qk][1]:
             self._resource[res]._version[TS][2] = val 
@@ -68,6 +83,8 @@ class Manager:
         qk = self.get_max(res, txn)
         if qk is not None:
             self.get_vers(res)[qk][0] = TS
+        self.set_read(txn, qk, res)
+
     
     def run(self):
         while len(self._queue) > 0:
@@ -100,7 +117,8 @@ class Manager:
                 self._transaction[getNumber(self._queue[0]) - 1].set_status(Status.COMMIT) 
             self._queue.pop(0)
         
-        self.print_resource();
+        print(self._read_logs)
+        # self.print_resource()
     
     def result(self):
         for x in self._transaction:
