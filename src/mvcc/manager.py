@@ -1,5 +1,5 @@
-from resource import Resource
-from transaction import *
+from mvcc.resource import Resource
+from mvcc.transaction import *
 from const import *
 from util import *
 import re
@@ -33,8 +33,7 @@ class Manager:
         try:
             return self._transaction[key - 1]
         except:
-            print("Transaction has not been initialized")
-            quit()
+            return False
 
     def get_vers(self, key):
         return self._resource[key]._version
@@ -120,7 +119,7 @@ class Manager:
                 self._queue.pop(0)
             else:
                 # Begin
-                if re.search(Pattern.BEGIN, self._queue[0]) is not None:
+                if not self.get_txn(getNumber(self._queue[0])):
                     txn = Transaction(
                         self.get_last_idx(), getNumber(self._queue[0]), self._ts
                     )
@@ -128,7 +127,7 @@ class Manager:
                     self._transaction.append(txn)
 
                 # W/R
-                elif re.search(Pattern.WRITE, self._queue[0]) is not None:
+                if re.search(Pattern.WRITE, self._queue[0]) is not None:
                     params = getParam(self._queue[0])
                     params = [s.strip() for s in params]
                     if params[1] not in self._resource:
@@ -149,7 +148,6 @@ class Manager:
                 elif re.search(Pattern.COMMIT, self._queue[0]) is not None:
                     self._transaction[getNumber(self._queue[0]) - 1].commit()
                 self._queue.pop(0)
-        # self.print_resource()
 
     def result(self):
         for x in self._transaction:

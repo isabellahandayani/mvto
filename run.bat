@@ -1,0 +1,1 @@
+python src/main.py in/tc1.txt

@@ -9,7 +9,7 @@ class Status:
 
     ABORT = "ABORTED"
     COMMIT = "COMMITED"
-    ACTIVE = "ACTIVE"
+    ACTIVE = "NOT COMMITED"
 
 
 class Pattern:
