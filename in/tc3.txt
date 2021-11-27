@@ -1,0 +1,9 @@
+W(T1, A, Cyndaquil)
+W(T1, A, Apel)
+W(T2, A, Squirtle)
+R(T4, A)
+R(T5, A)
+W(T2, A, Charmander)
+C1
+C2
+C5

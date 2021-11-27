@@ -2,7 +2,7 @@ from const import *
 
 
 class Transaction:
-    def __init__(self, id, name, ts):
+    def __init__(self, name, ts):
         self._name = name
         self._ts = ts
         self._status = Status.ACTIVE

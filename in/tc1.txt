@@ -2,12 +2,12 @@ R(T1, A)
 R(T2, A)
 R(T3, B)
 R(T1, B)
-W(T3, C, AIYAIYA)
-W(T2, C, BABABAB)
+W(T3, C, Arceus)
+W(T2, C, Darkrai)
 R(T1, C)
 C1
 R(T2, D)
-W(T3, B, NANANNA)
+W(T3, B, Dalgia)
 C3
-W(T2, D, Potatoo)
+W(T2, D, Palkia)
 C2
