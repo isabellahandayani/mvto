@@ -1,8 +1,8 @@
 R(T5, X)
-R(T2, X)
+R(T2, Y)
 R(T1, Y)
-W(T3. Y)
-W(T3, Z)
+W(T3. Y, AAAA)
+W(T3, Z, BBBB)
 R(T5, Z)
 R(T2, Z)
 C2
@@ -10,8 +10,6 @@ R(T1, X)
 C1
 R(T4, W)
 C4
-W(T3, W)
+W(T3, W, DDDD)
 C3
-W(T5, Y)
-W(T5, Z)
 C5
