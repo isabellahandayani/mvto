@@ -1,9 +1,12 @@
 W(T1, A, Cyndaquil)
-W(T1, A, Apel)
-W(T2, A, Squirtle)
-R(T4, A)
-R(T5, A)
-W(T2, A, Charmander)
+W(T1, A, Zekrom)
 C1
+W(T2, A, Squirtle)
+R(T3, A)
+R(T4, A)
+W(T2, A, Charmander)
 C2
-C5
+W(T3, A, Mewtwo)
+C3
+W(T4, A, Stakataka)
+C4
