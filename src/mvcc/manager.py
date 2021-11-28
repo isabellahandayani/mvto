@@ -124,20 +124,20 @@ class Manager:
         """
         Checks for issuing a write
         """
-        qk = self.get_max(res, txn)
+        qk = self.get_max(res, txn)  
         # Rollback
         if txn < qk[0]:
-            logging.info(f"[ABORT] T{txn}")
+            logging.info(f"[>] ABORT T{txn}")
             self.get_txn(txn).abort()
             self.rollback(self.check_read(self.check_write(txn)))
         # Overwrite
         elif txn == qk[1]:
-            logging.info(f"[OVERWRITE] {res} Version {txn}")
+            logging.info(f"[>] OVERWRITE Value({res}{txn}) = {val}")
             self._resource[res]._version[qk[2]][2] = val
             self.set_write(txn, res)
         # Add new version
         else:
-            logging.info(f"[WRITE] {res} Version {txn}")
+            logging.info(f"[>] WRITE {res}{txn} = ({txn}, {txn}, {val})")
             self._resource[res]._version[txn] = [txn, txn, val]
             self.set_write(txn, res)
 
@@ -147,24 +147,25 @@ class Manager:
         """
 
         qk = self.get_max(res, txn)
-        logging.info(f"[READ] T{txn} {res}")
 
         # If TS > R-TS QK
+        logging.info(f"[>] READ Value {res}{qk[2]}:{self.get_vers(res)[qk[2]][2]}")
         if txn > qk[0]:
             self.get_vers(res)[qk[2]][0] = txn
+            logging.info(f"[>] Update R-TS({res}{qk[2]}) = ({self.get_vers(res)[qk[2]][0]}, {self.get_vers(res)[qk[2]][1]})")
         self.set_read(txn, qk[2], res)
 
     def run(self):
         logging.basicConfig(
-            format=" %(message)s", datefmt="[%H:%M:%S]", level=logging.INFO
+            format=" %(message)s", level=logging.INFO
         )
         while len(self._queue) > 0:
-            logging.info(f"[!] {self._queue[0]}")
+            logging.info(f"{self._queue[0]}")
 
             # Check if query already executed
             if int(getNumber(self._queue[0])) in self.get_aborted():
                 logging.info(
-                    f"[Warning]: T{getNumber(self._queue[0])} already rollbacked, skipped "
+                    f"[WARNING]: T{getNumber(self._queue[0])} already rollbacked, skipped "
                 )
                 self._queue.pop(0)
             else:

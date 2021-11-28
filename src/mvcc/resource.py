@@ -1,5 +1,5 @@
 class Resource:
-    def __init__(self, name, content=""):
+    def __init__(self, name, content="Init"):
         """
         Resource requested
         - name is name
