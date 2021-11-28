@@ -1,1 +1,1 @@
-python src/main.py in/tc1.txt
+python src/main.py in/tc3.txt

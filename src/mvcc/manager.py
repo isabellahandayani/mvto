@@ -152,7 +152,7 @@ class Manager:
         logging.info(f"[>] READ Value {res}{qk[2]}:{self.get_vers(res)[qk[2]][2]}")
         if txn > qk[0]:
             self.get_vers(res)[qk[2]][0] = txn
-            logging.info(f"[>] Update R-TS({res}{qk[2]}) = ({self.get_vers(res)[qk[2]][0]}, {self.get_vers(res)[qk[2]][1]})")
+            logging.info(f"[>] Update R-TS({res}{qk[2]}) -> ({self.get_vers(res)[qk[2]][0]}, {self.get_vers(res)[qk[2]][1]}, {self.get_vers(res)[qk[2]][2]})")
         self.set_read(txn, qk[2], res)
 
     def run(self):
@@ -183,7 +183,7 @@ class Manager:
                     params = getParam(self._queue[0])
                     params = [s.strip() for s in params]
                     if params[1] not in self._resource:
-                        self._resource[params[1]] = Resource(params[1], params[2])
+                        self._resource[params[1]] = Resource(params[1])
 
                     self.req_write(params[1], getNumber(params[0]), params[2])
 
@@ -204,5 +204,6 @@ class Manager:
                 ):
                     self._transaction[getNumber(self._queue[0])].commit()
                 self._queue.pop(0)
+        
         for txn in self._transaction:
             print(self._transaction[txn])
